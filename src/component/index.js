@@ -50,7 +50,7 @@ class MuiTree extends React.Component {
       getActionsData: PropTypes.func,
       renderLabel: PropTypes.func,
       requestChildrenData: PropTypes.func,
-      childrenCountPerPage: PropTypes.number
+      childrenCountPerPage: PropTypes.number,
     })
   };
 

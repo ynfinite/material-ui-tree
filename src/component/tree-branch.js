@@ -13,13 +13,7 @@ import TreeBranchChildrenPage from './tree-branch-children-page';
 import styles from './style';
 
 class MuiTreeBranch extends React.Component {
-  static defaultProps = {
-    className: '',
-    data: {},
-    expand: false,
-    chdIndex: []
-  };
-
+ 
   static propTypes = {
     classes: PropTypes.object.isRequired,
     layer: PropTypes.number.isRequired,
@@ -34,25 +28,44 @@ class MuiTreeBranch extends React.Component {
       childrenName: PropTypes.string,
       expandFirst: PropTypes.bool,
       expandAll: PropTypes.bool,
+      initialState: PropTypes.shape(() => null),
       requestChildrenData: PropTypes.func,
-      childrenCountPerPage: PropTypes.number
+      childrenCountPerPage: PropTypes.number,
+      returnLastState: PropTypes.func
     })
   };
+
+  static defaultProps = {
+    className: '',
+    data: {},
+    expand: false,
+    chdIndex: []
+  };
+
 
   constructor(props, context) {
     super(props, context);
     const { layer } = props;
-    const { expandFirst, expandAll } = context.tree;
-    this.state = {
-      expand: expandAll || (layer === 0 ? expandFirst : false),
-      childrenPage: 0
-    };
+    const { expandFirst, expandAll, initialState } = context.tree;
+    if (initialState !== undefined) {
+      this.state = { ...initialState };
+    } else {
+      this.state = {
+        expand: expandAll || (layer === 0 ? expandFirst : false),
+        childrenPage: 0
+      };
+    }
   }
 
   state = {
     expand: false,
     childrenPage: 0
   };
+
+  componentWillUnmount() {
+    const { returnLastState } = this.content.tree;
+    returnLastState(this.state);
+  }
 
   getChildren() {
     const { data } = this.props;
