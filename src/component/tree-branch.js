@@ -29,6 +29,7 @@ class MuiTreeBranch extends React.Component {
       expandFirst: PropTypes.bool,
       expandAll: PropTypes.bool,
       initialState: PropTypes.shape(() => null),
+      alwaysRequestChildData: PropTypes.bool,
       requestChildrenData: PropTypes.func,
       childrenCountPerPage: PropTypes.number,
       returnLastState: PropTypes.func
@@ -81,8 +82,9 @@ class MuiTreeBranch extends React.Component {
 
   handleClick = () => {
     const { expand } = this.state;
+    const { alwaysRequestChildData } = this.context.tree;
     if (!expand) { // 即将展开
-      if (this.getChildren().length === 0) { // 没有子节点
+      if (alwaysRequestChildData || this.getChildren().length === 0) { // 没有子节点
         const { requestChildrenData } = this.context.tree;
         const { data, chdIndex } = this.props;
         if (requestChildrenData && typeof requestChildrenData === 'function') { // 通过配置的方法请求数据
