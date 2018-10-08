@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -88,10 +90,11 @@ var MuiTreeBranch = function (_React$Component) {
 
     _this.handleClick = function () {
       var expand = _this.state.expand;
+      var alwaysRequestChildData = _this.context.tree.alwaysRequestChildData;
 
       if (!expand) {
         // 即将展开
-        if (_this.getChildren().length === 0) {
+        if (alwaysRequestChildData || _this.getChildren().length === 0) {
           // 没有子节点
           var requestChildrenData = _this.context.tree.requestChildrenData;
           var _this$props = _this.props,
@@ -127,16 +130,28 @@ var MuiTreeBranch = function (_React$Component) {
     var layer = props.layer;
     var _context$tree = context.tree,
         expandFirst = _context$tree.expandFirst,
-        expandAll = _context$tree.expandAll;
+        expandAll = _context$tree.expandAll,
+        initialState = _context$tree.initialState;
 
-    _this.state = {
-      expand: expandAll || (layer === 0 ? expandFirst : false),
-      childrenPage: 0
-    };
+    if (initialState !== undefined) {
+      _this.state = _extends({}, initialState);
+    } else {
+      _this.state = {
+        expand: expandAll || (layer === 0 ? expandFirst : false),
+        childrenPage: 0
+      };
+    }
     return _this;
   }
 
   _createClass(MuiTreeBranch, [{
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      var returnLastState = this.content.tree.returnLastState;
+
+      returnLastState(this.state);
+    }
+  }, {
     key: 'getChildren',
     value: function getChildren() {
       var data = this.props.data;
@@ -246,12 +261,6 @@ var MuiTreeBranch = function (_React$Component) {
   return MuiTreeBranch;
 }(_react2.default.Component);
 
-MuiTreeBranch.defaultProps = {
-  className: '',
-  data: {},
-  expand: false,
-  chdIndex: []
-};
 MuiTreeBranch.propTypes = {
   classes: _propTypes2.default.object.isRequired,
   layer: _propTypes2.default.number.isRequired,
@@ -265,8 +274,19 @@ MuiTreeBranch.contextTypes = {
     childrenName: _propTypes2.default.string,
     expandFirst: _propTypes2.default.bool,
     expandAll: _propTypes2.default.bool,
+    initialState: _propTypes2.default.shape(function () {
+      return null;
+    }),
+    alwaysRequestChildData: _propTypes2.default.bool,
     requestChildrenData: _propTypes2.default.func,
-    childrenCountPerPage: _propTypes2.default.number
+    childrenCountPerPage: _propTypes2.default.number,
+    returnLastState: _propTypes2.default.func
   })
+};
+MuiTreeBranch.defaultProps = {
+  className: '',
+  data: {},
+  expand: false,
+  chdIndex: []
 };
 exports.default = (0, _styles.withStyles)(_style2.default, { withTheme: true })(MuiTreeBranch);
