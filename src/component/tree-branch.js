@@ -13,13 +13,7 @@ import TreeBranchChildrenPage from './tree-branch-children-page';
 import styles from './style';
 
 class MuiTreeBranch extends React.Component {
-  static defaultProps = {
-    className: '',
-    data: {},
-    expand: false,
-    chdIndex: []
-  };
-
+ 
   static propTypes = {
     classes: PropTypes.object.isRequired,
     layer: PropTypes.number.isRequired,
@@ -35,24 +29,44 @@ class MuiTreeBranch extends React.Component {
       expandFirst: PropTypes.bool,
       expandAll: PropTypes.bool,
       requestChildrenData: PropTypes.func,
-      childrenCountPerPage: PropTypes.number
+      childrenCountPerPage: PropTypes.number,
+      initialState: PropTypes.shape(() => null),
+      alwaysRequestChildData: PropTypes.bool,
+      returnLastState: PropTypes.func
     })
   };
+
+  static defaultProps = {
+    className: '',
+    data: {},
+    expand: false,
+    chdIndex: []
+  };
+
 
   constructor(props, context) {
     super(props, context);
     const { layer } = props;
-    const { expandFirst, expandAll } = context.tree;
-    this.state = {
-      expand: expandAll || (layer === 0 ? expandFirst : false),
-      childrenPage: 0
-    };
+    const { expandFirst, expandAll, initialState } = context.tree;
+    if (initialState !== undefined) {
+      this.state = { ...initialState };
+    } else {
+      this.state = {
+        expand: expandAll || (layer === 0 ? expandFirst : false),
+        childrenPage: 0
+      };
+    }
   }
 
   state = {
     expand: false,
     childrenPage: 0
   };
+
+  componentWillUnmount() {
+    const { returnLastState } = this.content.tree;
+    returnLastState(this.state);
+  }
 
   getChildren() {
     const { data } = this.props;
@@ -68,8 +82,9 @@ class MuiTreeBranch extends React.Component {
 
   handleClick = () => {
     const { expand } = this.state;
+    const { alwaysRequestChildData } = this.context.tree;
     if (!expand) { // 即将展开
-      if (this.getChildren().length === 0) { // 没有子节点
+      if (alwaysRequestChildData || this.getChildren().length === 0) { // 没有子节点
         const { requestChildrenData } = this.context.tree;
         const { data, chdIndex } = this.props;
         if (requestChildrenData && typeof requestChildrenData === 'function') { // 通过配置的方法请求数据
