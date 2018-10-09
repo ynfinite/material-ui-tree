@@ -8,22 +8,6 @@ import MuiTreeBranch from './tree-branch';
 import styles from './style';
 
 class MuiTree extends React.Component {
-  static defaultProps = {
-    className: '',
-    labelName: 'label',
-    valueName: 'value',
-    childrenName: 'children',
-    data: {},
-    title: '',
-    expandFirst: false,
-    expandAll: false,
-    childrenCountPerPage: 20,
-    actionsAlignRight: false,
-    getActionsData: null,
-    renderLabel: null,
-    requestChildrenData: null
-  };
-
   static propTypes = {
     classes: PropTypes.object.isRequired,
     className: PropTypes.string,
@@ -38,7 +22,10 @@ class MuiTree extends React.Component {
     actionsAlignRight: PropTypes.bool,
     getActionsData: PropTypes.func,
     renderLabel: PropTypes.func,
-    requestChildrenData: PropTypes.func
+    requestChildrenData: PropTypes.func,
+    initialState: PropTypes.shape(() => null),
+    alwaysRequestChildData: PropTypes.bool,
+    returnLastState: PropTypes.func
   };
 
   static childContextTypes = {
@@ -51,7 +38,29 @@ class MuiTree extends React.Component {
       renderLabel: PropTypes.func,
       requestChildrenData: PropTypes.func,
       childrenCountPerPage: PropTypes.number,
+      initialState: PropTypes.shape(() => null),
+      alwaysRequestChildData: PropTypes.bool,
+      returnLastState: PropTypes.func
     })
+  };
+
+  static defaultProps = {
+    className: '',
+    labelName: 'label',
+    valueName: 'value',
+    childrenName: 'children',
+    data: {},
+    title: '',
+    expandFirst: false,
+    expandAll: false,
+    childrenCountPerPage: 20,
+    actionsAlignRight: false,
+    getActionsData: null,
+    renderLabel: null,
+    requestChildrenData: null,
+    initialState: {},
+    alwaysRequestChildData: false,
+    returnLastState: null
   };
 
   getChildContext() {
@@ -65,7 +74,10 @@ class MuiTree extends React.Component {
       getActionsData,
       renderLabel,
       requestChildrenData,
-      childrenCountPerPage
+      childrenCountPerPage,
+      initialState,
+      alwaysRequestChildData,
+      returnLastState
     } = this.props;
     return {
       tree: {
@@ -78,7 +90,10 @@ class MuiTree extends React.Component {
         getActionsData,
         renderLabel,
         requestChildrenData,
-        childrenCountPerPage
+        childrenCountPerPage,
+        initialState,
+        alwaysRequestChildData,
+        returnLastState
       }
     };
   }

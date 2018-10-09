@@ -28,10 +28,10 @@ class MuiTreeBranch extends React.Component {
       childrenName: PropTypes.string,
       expandFirst: PropTypes.bool,
       expandAll: PropTypes.bool,
-      initialState: PropTypes.shape(() => null),
-      alwaysRequestChildData: PropTypes.bool,
       requestChildrenData: PropTypes.func,
       childrenCountPerPage: PropTypes.number,
+      initialState: PropTypes.shape(() => null),
+      alwaysRequestChildData: PropTypes.bool,
       returnLastState: PropTypes.func
     })
   };
