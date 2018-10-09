@@ -32,7 +32,8 @@ class MuiTreeBranch extends React.Component {
       childrenCountPerPage: PropTypes.number,
       initialState: PropTypes.shape(() => null),
       alwaysRequestChildData: PropTypes.bool,
-      returnLastState: PropTypes.func
+      returnLastState: PropTypes.func,
+      handleLeafClick: PropTypes.func
     })
   };
 
@@ -64,8 +65,10 @@ class MuiTreeBranch extends React.Component {
   };
 
   componentWillUnmount() {
-    const { returnLastState } = this.content.tree;
-    returnLastState(this.state);
+    const { returnLastState } = this.context.tree;
+    if (returnLastState && typeof requestChildrenData === 'function') {
+      returnLastState(this.state);
+    }
   }
 
   getChildren() {
@@ -82,11 +85,12 @@ class MuiTreeBranch extends React.Component {
 
   handleClick = () => {
     const { expand } = this.state;
-    const { alwaysRequestChildData } = this.context.tree;
+    const { alwaysRequestChildData, handleLeafClick } = this.context.tree;
+    const { data, chdIndex } = this.props;
+    
     if (!expand) { // 即将展开
       if (alwaysRequestChildData || this.getChildren().length === 0) { // 没有子节点
         const { requestChildrenData } = this.context.tree;
-        const { data, chdIndex } = this.props;
         if (requestChildrenData && typeof requestChildrenData === 'function') { // 通过配置的方法请求数据
           requestChildrenData(data, chdIndex, this.doExpand);
         } else { // 无子节点
@@ -95,7 +99,17 @@ class MuiTreeBranch extends React.Component {
       } else { // 有子节点 直接展开
         this.doExpand();
       }
+      
+      if (handleLeafClick && typeof handleLeafClick === 'function') {
+        handleLeafClick(data, chdIndex, this.doExpand);
+      }
+
     } else { // 将收起
+      
+      if (handleLeafClick && typeof handleLeafClick === 'function') {
+        handleLeafClick(data, chdIndex, this.doExpand);
+      }
+
       this.doExpand();
     }
   };

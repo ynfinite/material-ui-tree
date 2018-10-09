@@ -90,20 +90,22 @@ var MuiTreeBranch = function (_React$Component) {
 
     _this.handleClick = function () {
       var expand = _this.state.expand;
-      var alwaysRequestChildData = _this.context.tree.alwaysRequestChildData;
+      var _this$context$tree = _this.context.tree,
+          alwaysRequestChildData = _this$context$tree.alwaysRequestChildData,
+          handleLeafClick = _this$context$tree.handleLeafClick;
+      var _this$props = _this.props,
+          data = _this$props.data,
+          chdIndex = _this$props.chdIndex;
 
       if (!expand) {
         // 即将展开
         if (alwaysRequestChildData || _this.getChildren().length === 0) {
           // 没有子节点
-          var requestChildrenData = _this.context.tree.requestChildrenData;
-          var _this$props = _this.props,
-              data = _this$props.data,
-              chdIndex = _this$props.chdIndex;
+          var _requestChildrenData = _this.context.tree.requestChildrenData;
 
-          if (requestChildrenData && typeof requestChildrenData === 'function') {
+          if (_requestChildrenData && typeof _requestChildrenData === 'function') {
             // 通过配置的方法请求数据
-            requestChildrenData(data, chdIndex, _this.doExpand);
+            _requestChildrenData(data, chdIndex, _this.doExpand);
           } else {
             // 无子节点
             _this.doExpand();
@@ -112,8 +114,17 @@ var MuiTreeBranch = function (_React$Component) {
           // 有子节点 直接展开
           _this.doExpand();
         }
+
+        if (handleLeafClick && typeof handleLeafClick === 'function') {
+          handleLeafClick(data, chdIndex, _this.doExpand);
+        }
       } else {
         // 将收起
+
+        if (handleLeafClick && typeof handleLeafClick === 'function') {
+          handleLeafClick(data, chdIndex, _this.doExpand);
+        }
+
         _this.doExpand();
       }
     };
@@ -147,9 +158,11 @@ var MuiTreeBranch = function (_React$Component) {
   _createClass(MuiTreeBranch, [{
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      var returnLastState = this.content.tree.returnLastState;
+      var returnLastState = this.context.tree.returnLastState;
 
-      returnLastState(this.state);
+      if (returnLastState && typeof requestChildrenData === 'function') {
+        returnLastState(this.state);
+      }
     }
   }, {
     key: 'getChildren',
@@ -274,13 +287,14 @@ MuiTreeBranch.contextTypes = {
     childrenName: _propTypes2.default.string,
     expandFirst: _propTypes2.default.bool,
     expandAll: _propTypes2.default.bool,
+    requestChildrenData: _propTypes2.default.func,
+    childrenCountPerPage: _propTypes2.default.number,
     initialState: _propTypes2.default.shape(function () {
       return null;
     }),
     alwaysRequestChildData: _propTypes2.default.bool,
-    requestChildrenData: _propTypes2.default.func,
-    childrenCountPerPage: _propTypes2.default.number,
-    returnLastState: _propTypes2.default.func
+    returnLastState: _propTypes2.default.func,
+    handleLeafClick: _propTypes2.default.func
   })
 };
 MuiTreeBranch.defaultProps = {

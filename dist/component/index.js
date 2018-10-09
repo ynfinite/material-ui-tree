@@ -71,7 +71,11 @@ var MuiTree = function (_React$Component) {
           getActionsData = _props.getActionsData,
           renderLabel = _props.renderLabel,
           requestChildrenData = _props.requestChildrenData,
-          childrenCountPerPage = _props.childrenCountPerPage;
+          childrenCountPerPage = _props.childrenCountPerPage,
+          initialState = _props.initialState,
+          alwaysRequestChildData = _props.alwaysRequestChildData,
+          returnLastState = _props.returnLastState,
+          handleLeafClick = _props.handleLeafClick;
 
       return {
         tree: {
@@ -84,7 +88,11 @@ var MuiTree = function (_React$Component) {
           getActionsData: getActionsData,
           renderLabel: renderLabel,
           requestChildrenData: requestChildrenData,
-          childrenCountPerPage: childrenCountPerPage
+          childrenCountPerPage: childrenCountPerPage,
+          initialState: initialState,
+          alwaysRequestChildData: alwaysRequestChildData,
+          returnLastState: returnLastState,
+          handleLeafClick: handleLeafClick
         }
       };
     }
@@ -114,21 +122,6 @@ var MuiTree = function (_React$Component) {
   return MuiTree;
 }(_react2.default.Component);
 
-MuiTree.defaultProps = {
-  className: '',
-  labelName: 'label',
-  valueName: 'value',
-  childrenName: 'children',
-  data: {},
-  title: '',
-  expandFirst: false,
-  expandAll: false,
-  childrenCountPerPage: 20,
-  actionsAlignRight: false,
-  getActionsData: null,
-  renderLabel: null,
-  requestChildrenData: null
-};
 MuiTree.propTypes = {
   classes: _propTypes2.default.object.isRequired,
   className: _propTypes2.default.string,
@@ -143,7 +136,13 @@ MuiTree.propTypes = {
   actionsAlignRight: _propTypes2.default.bool,
   getActionsData: _propTypes2.default.func,
   renderLabel: _propTypes2.default.func,
-  requestChildrenData: _propTypes2.default.func
+  requestChildrenData: _propTypes2.default.func,
+  initialState: _propTypes2.default.shape(function () {
+    return null;
+  }),
+  alwaysRequestChildData: _propTypes2.default.bool,
+  returnLastState: _propTypes2.default.func,
+  handleLeafClick: _propTypes2.default.func
 };
 MuiTree.childContextTypes = {
   tree: _propTypes2.default.shape({
@@ -154,8 +153,33 @@ MuiTree.childContextTypes = {
     getActionsData: _propTypes2.default.func,
     renderLabel: _propTypes2.default.func,
     requestChildrenData: _propTypes2.default.func,
-    childrenCountPerPage: _propTypes2.default.number
+    childrenCountPerPage: _propTypes2.default.number,
+    initialState: _propTypes2.default.shape(function () {
+      return null;
+    }),
+    alwaysRequestChildData: _propTypes2.default.bool,
+    returnLastState: _propTypes2.default.func,
+    handleLeafClick: _propTypes2.default.func
   })
+};
+MuiTree.defaultProps = {
+  className: '',
+  labelName: 'label',
+  valueName: 'value',
+  childrenName: 'children',
+  data: {},
+  title: '',
+  expandFirst: false,
+  expandAll: false,
+  childrenCountPerPage: 20,
+  actionsAlignRight: false,
+  getActionsData: null,
+  renderLabel: null,
+  requestChildrenData: null,
+  initialState: undefined,
+  alwaysRequestChildData: false,
+  returnLastState: null,
+  handleLeafClick: null
 };
 exports.default = (0, _styles.withStyles)(_style2.default, { withTheme: true })(MuiTree);
 exports.getTreeLeafDataByIndexArray = _getTreeLeafDataByIndexArray3.default;

@@ -25,7 +25,8 @@ class MuiTree extends React.Component {
     requestChildrenData: PropTypes.func,
     initialState: PropTypes.shape(() => null),
     alwaysRequestChildData: PropTypes.bool,
-    returnLastState: PropTypes.func
+    returnLastState: PropTypes.func,
+    handleLeafClick: PropTypes.func
   };
 
   static childContextTypes = {
@@ -40,7 +41,8 @@ class MuiTree extends React.Component {
       childrenCountPerPage: PropTypes.number,
       initialState: PropTypes.shape(() => null),
       alwaysRequestChildData: PropTypes.bool,
-      returnLastState: PropTypes.func
+      returnLastState: PropTypes.func,
+      handleLeafClick: PropTypes.func
     })
   };
 
@@ -58,9 +60,10 @@ class MuiTree extends React.Component {
     getActionsData: null,
     renderLabel: null,
     requestChildrenData: null,
-    initialState: {},
+    initialState: undefined,
     alwaysRequestChildData: false,
-    returnLastState: null
+    returnLastState: null,
+    handleLeafClick: null
   };
 
   getChildContext() {
@@ -77,7 +80,8 @@ class MuiTree extends React.Component {
       childrenCountPerPage,
       initialState,
       alwaysRequestChildData,
-      returnLastState
+      returnLastState,
+      handleLeafClick
     } = this.props;
     return {
       tree: {
@@ -93,7 +97,8 @@ class MuiTree extends React.Component {
         childrenCountPerPage,
         initialState,
         alwaysRequestChildData,
-        returnLastState
+        returnLastState,
+        handleLeafClick
       }
     };
   }
