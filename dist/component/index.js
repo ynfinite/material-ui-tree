@@ -75,7 +75,8 @@ var MuiTree = function (_React$Component) {
           initialState = _props.initialState,
           alwaysRequestChildData = _props.alwaysRequestChildData,
           returnLastState = _props.returnLastState,
-          handleLeafClick = _props.handleLeafClick;
+          handleLeafClick = _props.handleLeafClick,
+          overrideClasses = _props.overrideClasses;
 
       return {
         tree: {
@@ -92,7 +93,8 @@ var MuiTree = function (_React$Component) {
           initialState: initialState,
           alwaysRequestChildData: alwaysRequestChildData,
           returnLastState: returnLastState,
-          handleLeafClick: handleLeafClick
+          handleLeafClick: handleLeafClick,
+          overrideClasses: overrideClasses
         }
       };
     }
@@ -142,7 +144,10 @@ MuiTree.propTypes = {
   }),
   alwaysRequestChildData: _propTypes2.default.bool,
   returnLastState: _propTypes2.default.func,
-  handleLeafClick: _propTypes2.default.func
+  handleLeafClick: _propTypes2.default.func,
+  overrideClasses: _propTypes2.default.shape(function () {
+    return null;
+  })
 };
 MuiTree.childContextTypes = {
   tree: _propTypes2.default.shape({
@@ -159,7 +164,10 @@ MuiTree.childContextTypes = {
     }),
     alwaysRequestChildData: _propTypes2.default.bool,
     returnLastState: _propTypes2.default.func,
-    handleLeafClick: _propTypes2.default.func
+    handleLeafClick: _propTypes2.default.func,
+    overrideClasses: _propTypes2.default.shape(function () {
+      return null;
+    })
   })
 };
 MuiTree.defaultProps = {
@@ -179,7 +187,8 @@ MuiTree.defaultProps = {
   initialState: undefined,
   alwaysRequestChildData: false,
   returnLastState: null,
-  handleLeafClick: null
+  handleLeafClick: null,
+  overrideClasses: {}
 };
 exports.default = (0, _styles.withStyles)(_style2.default, { withTheme: true })(MuiTree);
 exports.getTreeLeafDataByIndexArray = _getTreeLeafDataByIndexArray3.default;

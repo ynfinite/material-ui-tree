@@ -26,7 +26,8 @@ class MuiTree extends React.Component {
     initialState: PropTypes.shape(() => null),
     alwaysRequestChildData: PropTypes.bool,
     returnLastState: PropTypes.func,
-    handleLeafClick: PropTypes.func
+    handleLeafClick: PropTypes.func,
+    overrideClasses: PropTypes.shape(() => null)
   };
 
   static childContextTypes = {
@@ -42,7 +43,8 @@ class MuiTree extends React.Component {
       initialState: PropTypes.shape(() => null),
       alwaysRequestChildData: PropTypes.bool,
       returnLastState: PropTypes.func,
-      handleLeafClick: PropTypes.func
+      handleLeafClick: PropTypes.func,
+      overrideClasses: PropTypes.shape(() => null)
     })
   };
 
@@ -63,7 +65,8 @@ class MuiTree extends React.Component {
     initialState: undefined,
     alwaysRequestChildData: false,
     returnLastState: null,
-    handleLeafClick: null
+    handleLeafClick: null,
+    overrideClasses: {}
   };
 
   getChildContext() {
@@ -81,7 +84,8 @@ class MuiTree extends React.Component {
       initialState,
       alwaysRequestChildData,
       returnLastState,
-      handleLeafClick
+      handleLeafClick,
+      overrideClasses
     } = this.props;
     return {
       tree: {
@@ -98,7 +102,8 @@ class MuiTree extends React.Component {
         initialState,
         alwaysRequestChildData,
         returnLastState,
-        handleLeafClick
+        handleLeafClick,
+        overrideClasses
       }
     };
   }

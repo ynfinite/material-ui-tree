@@ -154,7 +154,7 @@ var MuiTreeLeaf = function (_React$Component) {
                 _Tooltip2.default,
                 {
                   title: hint,
-                  placement: actionsAlignRight ? 'left' : 'right'
+                  placement: 'bottom'
                 },
                 ButtonComponent
               );
@@ -185,6 +185,8 @@ var MuiTreeLeaf = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _cn4;
+
       var _props3 = this.props,
           classes = _props3.classes,
           data = _props3.data,
@@ -192,7 +194,8 @@ var MuiTreeLeaf = function (_React$Component) {
           expand = _props3.expand;
       var _context$tree3 = this.context.tree,
           valueName = _context$tree3.valueName,
-          actionsAlignRight = _context$tree3.actionsAlignRight;
+          actionsAlignRight = _context$tree3.actionsAlignRight,
+          overrideClasses = _context$tree3.overrideClasses;
 
 
       return _react2.default.createElement(
@@ -200,21 +203,25 @@ var MuiTreeLeaf = function (_React$Component) {
         {
           dense: true,
           button: true,
-          className: classes.treeNode,
+          className: (0, _classnames2.default)(classes.treeNode, _defineProperty({}, overrideClasses.treeNode, overrideClasses.treeNode)),
           id: 'tree-leaf-' + data[valueName],
           onClick: onClick
         },
         _react2.default.createElement(
           _ListItemIcon2.default,
           null,
-          expand ? _react2.default.createElement(_RemoveCircleOutline2.default, { className: classes.treeIcon }) : _react2.default.createElement(_AddCircleOutline2.default, { className: classes.treeIcon })
+          expand ? _react2.default.createElement(_RemoveCircleOutline2.default, { className: (0, _classnames2.default)(classes.treeIcon, _defineProperty({}, overrideClasses.treeIcon, overrideClasses.treeIcon)) }) : _react2.default.createElement(_AddCircleOutline2.default, { className: (0, _classnames2.default)(classes.treeIcon, _defineProperty({}, overrideClasses.treeIcon, overrideClasses.treeIcon)) })
         ),
         _react2.default.createElement(_ListItemText2.default, {
           inset: true,
           primary: this.getLabel(),
-          className: (0, _classnames2.default)(classes.treeText, _defineProperty({}, classes.treeTextFlex, actionsAlignRight))
+          className: (0, _classnames2.default)(classes.treeText, (_cn4 = {}, _defineProperty(_cn4, classes.treeTextFlex, actionsAlignRight), _defineProperty(_cn4, overrideClasses.treeText, overrideClasses.treeText), _cn4))
         }),
-        this.state.showButtons ? this.getActions(data) : null
+        _react2.default.createElement(
+          'div',
+          { className: (0, _classnames2.default)('leafActions', classes.leafActions, _defineProperty({}, overrideClasses.leafActions, overrideClasses.leafActions)) },
+          this.state.showButtons ? this.getActions(data) : null
+        )
       );
     }
   }]);

@@ -60,6 +60,8 @@ var _style2 = _interopRequireDefault(_style);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -92,10 +94,12 @@ var MuiTreeBranch = function (_React$Component) {
       var expand = _this.state.expand;
       var _this$context$tree = _this.context.tree,
           alwaysRequestChildData = _this$context$tree.alwaysRequestChildData,
-          handleLeafClick = _this$context$tree.handleLeafClick;
+          handleLeafClick = _this$context$tree.handleLeafClick,
+          overrideClasses = _this$context$tree.overrideClasses;
       var _this$props = _this.props,
           data = _this$props.data,
           chdIndex = _this$props.chdIndex;
+
 
       if (!expand) {
         // 即将展开
@@ -210,6 +214,8 @@ var MuiTreeBranch = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _cn2, _cn3;
+
       var _props2 = this.props,
           classes = _props2.classes,
           className = _props2.className,
@@ -218,7 +224,9 @@ var MuiTreeBranch = function (_React$Component) {
           layer = _props2.layer,
           chdIndex = _props2.chdIndex;
       var childrenPage = this.state.childrenPage;
-      var childrenCountPerPage = this.context.tree.childrenCountPerPage;
+      var _context$tree2 = this.context.tree,
+          childrenCountPerPage = _context$tree2.childrenCountPerPage,
+          overrideClasses = _context$tree2.overrideClasses;
 
       var children = this.getChildren();
       var pageCount = Math.ceil(children.length / childrenCountPerPage);
@@ -249,21 +257,21 @@ var MuiTreeBranch = function (_React$Component) {
               dense: true,
               button: true,
               onClick: this.loadMore,
-              className: classes.treeNode,
+              className: (0, _classnames2.default)(classes.treeNode, _defineProperty({}, overrideClasses.treeNode, overrideClasses.treeNode)),
               style: { paddingLeft: 48 }
             },
             _react2.default.createElement(
               _ListItemIcon2.default,
               null,
               _react2.default.createElement(_MoreVert2.default, {
-                className: (0, _classnames2.default)(classes.treeIcon, classes.treeIconButton)
+                className: (0, _classnames2.default)(classes.treeIcon, classes.treeIconButton, (_cn2 = {}, _defineProperty(_cn2, overrideClasses.treeIcon, overrideClasses.treeIcon), _defineProperty(_cn2, overrideClasses.treeIconButton, overrideClasses.treeIconButton), _cn2))
               })
             ),
             _react2.default.createElement(_ListItemText2.default, {
               inset: true,
               disableTypography: true,
               primary: '\u5DF2\u52A0\u8F7D' + (childrenPage + 1) * childrenCountPerPage + '/' + children.length + '\uFF0C\u70B9\u51FB\u52A0\u8F7D\u66F4\u591A...',
-              className: (0, _classnames2.default)(classes.treeText, classes.treeTextButton)
+              className: (0, _classnames2.default)(classes.treeText, classes.treeTextButton, (_cn3 = {}, _defineProperty(_cn3, overrideClasses.treeText, overrideClasses.treeText), _defineProperty(_cn3, overrideClasses.treeTextButton, overrideClasses.treeTextButton), _cn3))
             })
           ) : null
         )

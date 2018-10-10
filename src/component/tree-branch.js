@@ -85,7 +85,7 @@ class MuiTreeBranch extends React.Component {
 
   handleClick = () => {
     const { expand } = this.state;
-    const { alwaysRequestChildData, handleLeafClick } = this.context.tree;
+    const { alwaysRequestChildData, handleLeafClick, overrideClasses } = this.context.tree;
     const { data, chdIndex } = this.props;
     
     if (!expand) { // 即将展开
@@ -161,7 +161,7 @@ class MuiTreeBranch extends React.Component {
       chdIndex
     } = this.props;
     const { childrenPage } = this.state;
-    const { childrenCountPerPage } = this.context.tree;
+    const { childrenCountPerPage, overrideClasses } = this.context.tree;
     const children = this.getChildren();
     const pageCount = Math.ceil(children.length / childrenCountPerPage);
 
@@ -189,19 +189,19 @@ class MuiTreeBranch extends React.Component {
                   dense
                   button
                   onClick={this.loadMore}
-                  className={classes.treeNode}
+                  className={cn(classes.treeNode, { [overrideClasses.treeNode]: overrideClasses.treeNode })}
                   style={{ paddingLeft: 48 }}
                 >
                   <ListItemIcon>
                     <MoreVertIcon
-                      className={cn(classes.treeIcon, classes.treeIconButton)}
+                      className={cn(classes.treeIcon, classes.treeIconButton, { [overrideClasses.treeIcon]: overrideClasses.treeIcon, [overrideClasses.treeIconButton]: overrideClasses.treeIconButton })}
                     />
                   </ListItemIcon>
                   <ListItemText
                     inset
                     disableTypography
                     primary={`已加载${(childrenPage + 1) * childrenCountPerPage}/${children.length}，点击加载更多...`}
-                    className={cn(classes.treeText, classes.treeTextButton)}
+                    className={cn(classes.treeText, classes.treeTextButton, { [overrideClasses.treeText]: overrideClasses.treeText, [overrideClasses.treeTextButton]: overrideClasses.treeTextButton })}
                   />
                 </ListItem>
               )

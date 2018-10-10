@@ -93,7 +93,7 @@ class MuiTreeLeaf extends React.Component {
             WrappedButtonComponent = (
               <Tooltip
                 title={hint}
-                placement={actionsAlignRight ? 'left' : 'right'}
+                placement='bottom'
               >
                 {ButtonComponent}
               </Tooltip>
@@ -129,13 +129,13 @@ class MuiTreeLeaf extends React.Component {
     const {
       classes, data, onClick, expand
     } = this.props;
-    const { valueName, actionsAlignRight } = this.context.tree;
+    const { valueName, actionsAlignRight, overrideClasses } = this.context.tree;
 
     return (
       <ListItem
         dense
         button
-        className={classes.treeNode}
+        className={cn(classes.treeNode, { [overrideClasses.treeNode]: overrideClasses.treeNode })}
         id={`tree-leaf-${data[valueName]}`}
         onClick={onClick}
       >
@@ -143,10 +143,10 @@ class MuiTreeLeaf extends React.Component {
           {
             expand
               ? (
-                <RemoveIcon className={classes.treeIcon} />
+                <RemoveIcon className={cn(classes.treeIcon, { [overrideClasses.treeIcon]: overrideClasses.treeIcon })} />
               )
               : (
-                <AddIcon className={classes.treeIcon} />
+                <AddIcon className={cn(classes.treeIcon, { [overrideClasses.treeIcon]: overrideClasses.treeIcon })} />
               )
           }
         </ListItemIcon>
@@ -154,10 +154,13 @@ class MuiTreeLeaf extends React.Component {
           inset
           primary={this.getLabel()}
           className={cn(classes.treeText, {
-            [classes.treeTextFlex]: actionsAlignRight
+            [classes.treeTextFlex]: actionsAlignRight,
+            [overrideClasses.treeText]: overrideClasses.treeText
           })}
         />
-        { this.state.showButtons ? this.getActions(data) : null }
+        <div className={cn('leafActions', classes.leafActions, { [overrideClasses.leafActions]: overrideClasses.leafActions })}>
+          { this.state.showButtons ? this.getActions(data) : null }
+        </div>
       </ListItem>
     );
   }
